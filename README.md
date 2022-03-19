@@ -1,6 +1,6 @@
 Pour installer le projet :
 
-1. git clone ADRESSE_DU_REPO
+1. git clone https://github.com/kevinadorais/lapasserelle_myblog_correction.git
 2. Creer votre .env.local avec les données de votre base de données
 3. composer i
 4. php bin/console doctrine:database:create
