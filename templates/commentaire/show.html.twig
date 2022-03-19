@@ -1,0 +1,37 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Commentaire{% endblock %}
+
+{% block innerContent %}
+    <h3>Commentaire</h3>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ commentaire.id }}</td>
+            </tr>
+            <tr>
+                <th>Contenu</th>
+                <td>{{ commentaire.contenu }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ commentaire.date ? commentaire.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Auteur</th>
+                <td>{{ commentaire.auteur }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class='my-2'>  
+        <a href="{{ path('myblog_commentaire_edit', {commentaire: commentaire.id}) }}">Editer</a>
+    </div>
+    <div class='my-2'>
+        <a href="{{ path('myblog_article_show', {idArticle: commentaire.article.id}) }}">Retour en arrière</a>
+    </div>
+
+
+    {{ include('commentaire/_delete_form.html.twig') }}
+{% endblock %}

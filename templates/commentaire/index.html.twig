@@ -1,0 +1,34 @@
+{% block body %}
+    <h3>liste des commentaires</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Contenu</th>
+                <th>Date</th>
+                <th>Auteur</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commentaire in commentaires %}
+            <tr>
+                <td>{{ commentaire.id }}</td>
+                <td>{{ commentaire.contenu }}</td>
+                <td>{{ commentaire.date ? commentaire.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ commentaire.auteur }}</td>
+                <td>
+                    <a href="{{ path('myblog_commentaire_show', {commentaire: commentaire.id}) }}">Voir</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('myblog_commentaire_new', { article: article.id}) }}">Ajouter un commentaire</a>
+{% endblock %}

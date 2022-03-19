@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Editer commentaire - {{ parent() }}{% endblock %}
+
+{% block innerContent %}
+    <h3>Editer commentaire</h3>
+
+    {{ include('commentaire/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+
+    <a href="{{ path('myblog_commentaire_show', {commentaire: commentaire.id}) }}">Retour en arrière</a>
+{% endblock %}
