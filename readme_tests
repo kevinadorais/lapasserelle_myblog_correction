@@ -1,0 +1,23 @@
+LES TESTS.
+
+3 Types de tests :
+- Tests unitaire
+Permet de tester une fonction
+- Tests Fonctionnel
+Permet de tester des class php
+- End to End
+Permet de simuler des clicks sur lappli et voir si les resction sont les bonnes
+
+3 Manières de tester :
+- Tester pour verifier
+Ecritre le code puis écrire les tests
+- Test driven développement
+Ecrire les tests puis ecrire le code
+- Test First
+Ecrire les tests en même temp que le code
+
+php unit pour les tests unitaire et Fonctionnels
+behat pour les tests end to end
+
+Installer php unit
+composer require --dev symfony/test-pack
