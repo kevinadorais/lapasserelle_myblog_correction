@@ -9,7 +9,7 @@
     <div class="show-article">
         <h2>{{ article.titre}}</h2>
         <div class='d-flex justify-content-center'>
-            <img class='w-25' src="{{asset('articlePicture/' ~ article.picture)}}" alt="{{article.picture}}">
+            <img class='w-50' src="{{asset('articlePicture/' ~ article.picture)}}" alt="{{article.picture}}">
         </div>
 
         <h3 class="auteur-subtitle">
@@ -18,7 +18,7 @@
                 {{ article.auteur.fullName }}
             </a>
         </h3>
-        <h4>Publié le {{ article.dateCreation | date("d/m/Y \à H\\hi")}} </h4>
+        <h4>Publié le {{ article.dateCreation | date("d/m/Y H:i")}} </h4>
         <p class="article">
             {{ article.contenu }}
         </p>

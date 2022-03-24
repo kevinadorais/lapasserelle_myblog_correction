@@ -197,4 +197,9 @@ class Auteur
     {
         return $this->prenom . " " . $this->nom ;
     }
+
+    public function getLabel()
+    {
+        return "choisir ".$this->getFullName();
+    }
 }
