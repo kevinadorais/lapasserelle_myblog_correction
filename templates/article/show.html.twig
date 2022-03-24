@@ -8,6 +8,10 @@
     </h3>
     <div class="show-article">
         <h2>{{ article.titre}}</h2>
+        <div class='d-flex justify-content-center'>
+            <img class='w-25' src="{{asset('articlePicture/' ~ article.picture)}}" alt="{{article.picture}}">
+        </div>
+
         <h3 class="auteur-subtitle">
             Par le
             <a href="{{ path("myblog_auteur_show", {idAuteur: article.auteur.id}) }}">

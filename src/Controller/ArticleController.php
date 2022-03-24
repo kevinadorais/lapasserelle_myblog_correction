@@ -7,6 +7,7 @@ use App\Entity\Auteur;
 use App\Entity\Utilisateur;
 use App\Form\ArticleType;
 use App\Form\AuteurType;
+use App\Services\FileService;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,7 +61,7 @@ class ArticleController extends AbstractController
         ) ;
     }
 
-    public function create(Request $request)
+    public function create(Request $request, FileService $fs)
     {
         // Vérification de l'autorisation : cette page n'est accessible qu'à un utilisateur connecté.
         // S'il n'est pas connecté, il sera redirigé vers la page de login, et s'il se connecte il
@@ -88,6 +89,12 @@ class ArticleController extends AbstractController
         //Si le formulaire est soumis et valide :
         if($form->isSubmitted() && $form->isValid())
         {
+            // Récuperation de la picture
+            $picture = $form->get('picture')->getData();
+            // Appelle de ma fonction return un nom de fichier
+            $filename = $fs->saveFile($this->getParameter('article_picture_directory'), $picture);
+            // Ajout du nom du fichier dans l'article pour le persist
+            $article->setPicture($filename);
             //la date n'est pas demandée dans le formulaire :
             //C'est ici qu'on la met à jour avec le temps exact du serveur.
             $article->setDateCreation(date_create("now")) ;
@@ -115,7 +122,7 @@ class ArticleController extends AbstractController
         ) ;
     }
 
-    public function update($idArticle, Request $request)
+    public function update($idArticle, Request $request, FileService $fs)
     {
 
         //idem methode précédente
@@ -125,6 +132,9 @@ class ArticleController extends AbstractController
         //La seule différence, c'est qu'on lie le formulaire à un article, récupéré par son id, et non un article vide.
         $articleRepo = $this->doctrine->getRepository(Article::class) ;
         $article = $articleRepo->find($idArticle) ;
+        if($article->getPicture()){
+            $oldName = $article->getPicture();
+        }
 
         if($article === null)
         {
@@ -145,6 +155,22 @@ class ArticleController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            // Récuperation de la picture
+            $picture = $form->get('picture')->getData();
+
+
+            if(isset($oldName)){
+                // Appelle de ma fonction return un nom de fichier
+                $filename = $fs->saveFile($this->getParameter('article_picture_directory'), $picture, $oldName);
+            }
+            else{
+                $filename = $fs->saveFile($this->getParameter('article_picture_directory'), $picture);
+            }
+
+
+            // Ajout du nom du fichier dans l'article pour le persist
+            $article->setPicture($filename);
+
             $em = $this->doctrine->getManager() ;
             $article->setDateEdition(date_create("now")) ;
 
@@ -162,7 +188,7 @@ class ArticleController extends AbstractController
         ) ;
     }
 
-    public function remove($idArticle)
+    public function remove($idArticle, FileService $fs)
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
@@ -180,9 +206,9 @@ class ArticleController extends AbstractController
             // AccessDeniedException, exception d'accès refusé.
             throw $this->createAccessDeniedException("t'as pas le droit, c'est pas ton article") ;
         }
+        $fs->removeFile($this->getParameter('article_picture_directory'), $article->getPicture());
 
         $em = $this->doctrine->getManager() ;
-
         $em->remove($article);
         $em->flush();
 
